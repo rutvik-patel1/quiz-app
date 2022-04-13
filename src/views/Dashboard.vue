@@ -2,8 +2,7 @@
   <the-header></the-header>
   <div class="heading">Welcome , <span style="font-weight:600">{{ username }}</span> </div>
   <div class="d-flex flex-wrap">
-      <quize-card></quize-card>
-      
+      <quize-card :id="id"></quize-card>
   </div>
 </template>
 
@@ -17,7 +16,8 @@ components:{
 },
 data() {
     return {
-        username : 'Rutvik Patel'
+        username : 'Rutvik Patel',
+        id:'id'
     }
 },
 
@@ -28,5 +28,6 @@ data() {
 .heading{
     font-size: 24px;
     margin-top:10px;
+    text-align: center;
 }
 </style>

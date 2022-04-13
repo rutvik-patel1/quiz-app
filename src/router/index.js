@@ -25,7 +25,25 @@ const routes = [
   {
     path: '/quize',
     name: 'Quize',
-    component: () => import('../views/TheQuize.vue')
+    redirect: { name: 'Dashboard' },
+    component: () => import('../views/TheQuize.vue'),
+    children: [
+      {
+        path: 'id',
+        components: {
+          helper: () => import('../components/quize/QuestionsList.vue')
+        }
+      },
+      {
+      name:"result",
+      path: 'id/result',
+      components: {
+        helper: () => import('../components/quize/Result.vue')
+      }
+    },
+     
+  ],
+    
   }
 ]
 
