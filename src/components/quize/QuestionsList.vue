@@ -1,34 +1,75 @@
 <template>
-  <div>
-      <ul class="quiz">
-      <li>
-        <p>{{num+1}}){{data2.question}}</p>
-        <ul class="choices" v-for="(ans,index) in answerList" :key="index">
-          <li><label><input type="radio" :name="num+1" :value="ans"><span>{{ans}}</span></label></li>
+  <div class="container" style="margin-top:80px;">
+    <form @submit.prevent="submit">
+      <div v-for="(data,index) in dataList" :key="index">
+        <div>
+        <ul class="quiz">
+        <li>
+          <p>{{index+1}}){{data.question}}</p>
+          <ul class="choices" v-for="(ans,index) in [data.correct_answer,...data.incorrect_answers]" :key="index">
+            <li><label><input type="radio" :name="data.question" :ref='"q"+index' :value="ans"><span>{{ans}}</span></label></li>
+          </ul>
+        </li>
         </ul>
-      </li>
-      </ul>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mb-5">Submit Answers</button>
+    </form>
   </div>
 </template>
-
 <script>
-export default {
-  props:['data2','num'],
-  created(){
-      this.answerList = [this.data2.correct_answer,...this.data2.incorrect_answers]
-      console.log("num",this.num)
-  },
-  data() {
-      return {
-          answerList:[]
-      }
-  },
-  methods:{}
+const axios = require('axios').default;
 
+export default {
+async created(){
+  console.log("hello")
+  this.getData()
+  console.log(this.dataList)
+},
+data() {
+  return {
+    dataList:[],
+    name:"gg",
+    answerList:[],
+    dataLength:0 
+     }
+},
+ methods:{
+  getData(){
+    axios.get('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
+  .then((response)=> {
+    console.log(response.data.results);
+    this.dataList = response.data.results
+    this.dataLength = this.dataList.length
+    
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  },
+  submit(){
+   console.log("submit clicked")
+
+  console.log(this.$refs.q1.value)
+   console.log("submit clicked")
+   
+  //  this.$router.push({name:'result'})
+ }
+   
+ },
+ 
 }
 </script>
 
 <style scoped>
+.heading{
+    font-size: 24px;
+    margin-top:10px;
+}
+.quiz{
+  list-style-type: none;
+  padding: 0;
+}
 .quiz,
 .choices {
   list-style-type: none;
@@ -67,6 +108,5 @@ input[type="radio"] {
   padding: 1rem;
   border: 1px solid goldenrod;
 }
-
 
 </style>
