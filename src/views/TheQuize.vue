@@ -18,11 +18,16 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item  ms-3 me-3">
-            <a class="nav-link active text-white fw-bold" aria-current="page" href="#">Time : 5:00:00</a>
+          <li class="nav-item ms-3 me-3">
+            <a
+              class="nav-link active text-white fw-bold"
+              aria-current="page"
+              href="#"
+              >Remaining Time: {{ countDown }}</a
+            >
           </li>
           <li class="nav-item ms-3 me-3 border p">
-            <a class="nav-link text-white fw-bold" href="#">Logout</a>
+            <a class="nav-link text-white fw-bold" href="#" @click="logout">Logout</a>
           </li>
           <!-- <li class="nav-item dropdown">
             <a
@@ -46,7 +51,40 @@
       </div>
     </nav>
   </header>
-  <div class="container" style="margin-top:80px;">
-    <router-view name="helper" ></router-view>
+  <div class="container" style="margin-top: 80px">
+    <router-view name="helper"></router-view>
   </div>
 </template>
+
+<script>
+export default {
+  
+  created() {
+    this.countDown = this.$route.params.time
+    this.countDownTimer();
+  
+  },
+  data() {
+    return {
+      countDown: 100,
+    };
+  },
+  methods: {
+    countDownTimer() {
+      if (this.countDown > 0) {
+        setTimeout(() => {
+          this.countDown -= 1;
+          this.countDownTimer();
+        }, 1000);
+      } else {
+        this.$router.push({ name: "result" });
+      }
+    },
+    async logout(){
+          this.$store.dispatch('logout').then((res)=>{
+            this.$router.push({ name:'Login'})
+          }).catch(error=>console.log(error))
+    }
+  },
+};
+</script>

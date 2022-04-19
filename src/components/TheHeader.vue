@@ -24,7 +24,7 @@
             >
           </li>
           <li class="nav-item ms-3 me-3 border">
-            <a class="nav-link text-white" href="#">Logout</a>
+            <a class="nav-link text-white" @click="logout">Logout</a>
           </li>
           <!-- <li class="nav-item dropdown">
             <a
@@ -51,7 +51,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+
+
+methods:{
+  
+    async logout(){
+          this.$store.dispatch('logout').then((res)=>{
+            this.$router.push({ name:'Login'})
+          }).catch(error=>console.log(error))
+    }
+}
+  
+};
 </script>
 
 <style></style>
