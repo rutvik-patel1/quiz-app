@@ -18,6 +18,7 @@
                       :name="index"
                       :ref="'q' + index"
                       :value="ans"
+                      required
                     /><span>{{ ans }}</span></label
                   >
                 </li>
@@ -29,18 +30,30 @@
 
       <button type="submit" class="btn btn-primary mb-5">Submit Answers</button>
     </form>
-    <p id="result"></p>
+    <!-- <p id="result"></p> -->
   </div>
 </template>
 <script>
-const axios = require("axios").default;
-
+// const axios = require("axios").default;
+import {getQuizList,getAvailableQuiz,getQuizListByID} from "../../data/data"
+import {postResult} from '../../data/result'
 export default {
   async created() {
     console.log("hello");
-    this.getData();
+    // this.getData();
     // console.log(this.dataList);
     this.qID = this.$route.params.id
+    getQuizList(this.qID).then((res)=>{
+      console.log("plll",res.data);
+      this.dataList = res.data
+      return res.data}).then((res)=>{
+        res.forEach((each)=>{
+           this.correctAns.push(each.correct_answer)
+        })
+      })
+    // console.log("dataList: ",this.dataList)
+    console.log("correctAns",this.correctAns)
+
   },
   data() {
     return {
@@ -49,6 +62,8 @@ export default {
       qID: 1,
       answerList: [],
       dataLength: 0,
+      attemptedAns:[],
+      correctAns:[]
     };
   },
   methods: {
@@ -73,21 +88,57 @@ export default {
     
     submit() {
       console.log("submit clicked");
-      console.log(this.$refs.q1.value )
-      document.getElementById("result").innerHTML = "";
+      // console.log(this.$refs.q1.value )
+      // document.getElementById("result").innerHTML = "";
       var ele = document.getElementsByTagName("input");
-
+      const attemptedAnswers  = []
       for (let i = 0; i < ele.length; i++) {
         if ((ele[i].type = "radio")) {
-          if (ele[i].checked)
-            document.getElementById("result").innerHTML +=
-              ele[i].name + " Value: " + ele[i].value + "<br>";
+          if (ele[i].checked){
+            // document.getElementById("result").innerHTML +=
+            //   ele[i].name + " Value: " + ele[i].value + "<br>";
+              attemptedAnswers.push(ele[i].value);}
         }
       }
-      // console.log(this.$refs.q1.value)
-      console.log("submit clicked");
-
-      //  this.$router.push({name:'result'})
+      this.attemptedAns = attemptedAnswers
+      // localStorage.attemptedAnswers = JSON.stringify(attemptedAnswers);
+      let results = []
+      let score = 0
+      for (let i = 0 ; i<this.attemptedAns.length ;i++){
+          if(this.attemptedAns[i] == this.correctAns[i]){
+              score = score + 1
+              let r = this.attemptedAns[i] 
+              console.log("inif")
+              const obj ={
+    
+                result : "correct",
+                ans : r
+              }
+              results.push(obj)
+          }
+          else{
+              let r = this.attemptedAns[i] 
+              console.log("inelse")
+              const obj ={
+                result : "wrong",
+                ans : r
+              }
+              results.push(obj)
+          }  
+      }
+      console.log("attept",this.attemptedAns)
+      console.log("corr",this.correctAns)
+    console.log("ress",results)
+    localStorage.attemptedAnswers = JSON.stringify(results);
+    postResult(this.qID,score,this.correctAns.length)
+    .then((res)=>{ console.log("postresult",res)
+      localStorage.setItem("timeer",true)
+       this.$router.push({ name: "result" });
+    })
+    .catch((error)=>{
+      console.log("somethinf went wrong")
+      console.error(error)})
+       
     },
   },
   computed:{

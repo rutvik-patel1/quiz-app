@@ -41,7 +41,7 @@ export default {
     },
     methods:{
       async submit() {
-      const form = { email:this.email ,pass:this.pass1}
+      const form = { email:this.email ,pass:this.pass1 ,name:this.name}
       await this.$store.dispatch('signup',form)
       console.log("done")
       this.$router.push({ name: "Dashboard" });

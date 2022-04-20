@@ -1,20 +1,26 @@
 import { createStore } from 'vuex'
 import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword ,signOut } from "firebase/auth";
+import axios from 'axios';
 
 
 export default createStore({
   state: {
     userId:null,
     token:null,
+    uName:null,
   },
   mutations: {
     setUser(state, payload) {
       state.token = payload.token;
       state.userId = payload.userId;
     },
+    setName(state,payload) {
+       state.uName = payload
+    },
     resetToken(state){
       state.token = null;
       state.userId = null;
+      state.uName = null;
     }
     
   },
@@ -35,7 +41,8 @@ export default createStore({
       console.log(userCredential._tokenResponse.idToken)
       console.log(userCredential._tokenResponse.email)
 
-    }).catch(error=>console.log(error))
+    })
+    .catch(error=>console.log(error))
     
       
     },
@@ -48,16 +55,23 @@ export default createStore({
             userId: userCredential._tokenResponse.email,
           });
         console.log(userCredential)
-  }).catch(error=>console.log(error))
+        const obj = {"attemptedQuiz":[{"id":2,"score":9,"totalMarks":10}],"availableQuiz":[{"id":1},{"id":0}],"email":form.email,"id":1,"name":form.name}
+        axios.post(`https://vue-app-quiz-default-rtdb.firebaseio.com/users.json`,obj).then((res)=>{
+          console.log(res)
+        }).catch(error=>console.log(error))
+  })
+
+  .catch(error=>console.log(error))
     },
 
     async logout({commit}) {
       const auth = getAuth();
       signOut(auth).then(() => {
-        console.log("logoutttttt")
+        console.log("logout")
+      }).catch((err)=>{
+        console.error(err)
       })
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
+      localStorage.clear();
       commit('resetToken')
     }
 

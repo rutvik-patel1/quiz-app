@@ -18,7 +18,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item ms-3 me-3">
+          <li class="nav-item ms-3 me-3" v-if="!isDone">
             <a
               class="nav-link active text-white fw-bold"
               aria-current="page"
@@ -29,7 +29,7 @@
           <li class="nav-item ms-3 me-3 border p">
             <a class="nav-link text-white fw-bold" href="#" @click="logout">Logout</a>
           </li>
-          <!-- <li class="nav-item dropdown">
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle text-white"
               href="#"
@@ -38,15 +38,14 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Settings
+              Options
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Log out</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="#" @click="logout" >Log out</a></li>
+            
+            <li><a class="dropdown-item" href="#">Attempted Quiz</a></li>
             </ul>
-          </li> -->
+          </li>
         </ul>
       </div>
     </nav>
@@ -59,14 +58,15 @@
 <script>
 export default {
   
-  created() {
+  async created() {
     this.countDown = this.$route.params.time
     this.countDownTimer();
-  
+    this.isDone = await localStorage.getItem("timeer",false)
   },
   data() {
     return {
       countDown: 100,
+      isDone:null
     };
   },
   methods: {

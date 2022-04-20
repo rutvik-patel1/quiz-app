@@ -15,6 +15,9 @@
 <script>
 
 export default {
+  created() {
+    console.log("hhhhh",this.quiz)
+  },
  props:['quiz']
 
 }
