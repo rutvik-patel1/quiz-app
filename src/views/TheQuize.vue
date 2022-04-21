@@ -27,7 +27,9 @@
             >
           </li>
           <li class="nav-item ms-3 me-3 border p">
-            <a class="nav-link text-white fw-bold" href="#" @click="logout">Logout</a>
+            <a class="nav-link text-white fw-bold" href="#" @click="logout"
+              >Logout</a
+            >
           </li>
           <li class="nav-item dropdown">
             <a
@@ -41,9 +43,11 @@
               Options
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#" @click="logout" >Log out</a></li>
-            
-            <li><a class="dropdown-item" href="#">Attempted Quiz</a></li>
+              <li>
+                <a class="dropdown-item" href="#" @click="logout">Log out</a>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Attempted Quiz</a></li>
             </ul>
           </li>
         </ul>
@@ -57,16 +61,15 @@
 
 <script>
 export default {
-  
   async created() {
-    this.countDown = this.$route.params.time
+    this.countDown = this.$route.params.time;
     this.countDownTimer();
-    this.isDone = await localStorage.getItem("timeer",false)
+    this.isDone = await localStorage.getItem("timeer", false);
   },
   data() {
     return {
       countDown: 100,
-      isDone:null
+      isDone: null,
     };
   },
   methods: {
@@ -80,11 +83,14 @@ export default {
         this.$router.push({ name: "result" });
       }
     },
-    async logout(){
-          this.$store.dispatch('logout').then((res)=>{
-            this.$router.push({ name:'Login'})
-          }).catch(error=>console.log(error))
-    }
+    async logout() {
+      this.$store
+        .dispatch("logout")
+        .then((res) => {
+          this.$router.push({ name: "Login" });
+        })
+        .catch((error) => console.log(error));
+    },
   },
 };
 </script>

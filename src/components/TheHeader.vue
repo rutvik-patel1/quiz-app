@@ -52,17 +52,16 @@
 
 <script>
 export default {
-
-
-methods:{
-  
-    async logout(){
-          this.$store.dispatch('logout').then((res)=>{
-            this.$router.push({ name:'Login'})
-          }).catch(error=>console.log(error))
-    }
-}
-  
+  methods: {
+    async logout() {
+      this.$store
+        .dispatch("logout")
+        .then((res) => {
+          this.$router.push({ name: "Login" });
+        })
+        .catch((error) => console.log(error));
+    },
+  },
 };
 </script>
 
