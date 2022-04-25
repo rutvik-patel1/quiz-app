@@ -4,7 +4,7 @@
       class="navbar navbar-expand-lg navbar-light"
       style="background-color: #572a2e"
     >
-      <a class="navbar-brand text-white ms-5 fw-bold fs-2" href="#">Quuuiz</a>
+      <router-link class="navbar-brand text-white ms-5 fw-bold fs-2" to="/dashboard">Quuuiz</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -18,7 +18,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item ms-3 me-3" v-if="!isDone">
+          <li class="nav-item ms-3 me-3" v-if="visible">
             <a
               class="nav-link active text-white fw-bold"
               aria-current="page"
@@ -55,23 +55,31 @@
     </nav>
   </header>
   <div class="container" style="margin-top: 80px">
+    <Transition name="bounce">
     <router-view name="helper"></router-view>
+    </Transition>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   async created() {
     this.countDown = this.$route.params.time;
     this.countDownTimer();
-    this.isDone = await localStorage.getItem("timeer", false);
   },
+  computed: mapState(['visible']),
   data() {
     return {
       countDown: 100,
-      isDone: null,
+      
     };
   },
+  // watch:{
+  //    visible(oldValue,newValue){
+  //      console.log(`Updating from ${oldValue} to ${newValue}`);
+  //    }
+  // },
   methods: {
     countDownTimer() {
       if (this.countDown > 0) {

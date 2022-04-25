@@ -9,6 +9,27 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/admin",
+    name: "Admin",
+    component: () => import("../views/admin.vue"),
+    // meta: { requiresAuth: true },
+    
+  },
+  {
+    name: "Admind",
+      path:"/admin/dashboard",
+      component: () => import("../views/adminDashboard.vue"),
+      beforeEnter: (to, from, next) => {
+        if(from.path == '/admin'){
+          next();
+        }
+        else{
+          next('/admin')
+        }
+      }
+
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),

@@ -4,9 +4,9 @@
       <h3 class="card-title">Login</h3>
       <form @submit.prevent="submit">
         <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
+          <label for="email" class="form-label">User Name</label>
           <input
-            type="email"
+            type="text"
             v-model="form.email"
             class="form-control"
             id="email"
@@ -25,11 +25,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
 
-        <p>
-          <router-link to="/register"
-            >Dont have an account? Register</router-link
-          >
-        </p>
       </form>
     </div>
   </div>
@@ -45,19 +40,9 @@ export default {
   },
   methods: {
     async submit() {
-      this.$store
-        .dispatch("login", this.form)
-        .then((res) => {
-          let redirectTo = this.$route.query.redirectTo;
-          if (redirectTo) {
-            this.$router.replace({ path: redirectTo });
-          }
-          this.$router.push('/dashboard');
-          // return res;
-        })
-        .catch((err) => {
-          console.log("error in login");
-        });
+      if (this.form.email == 'admin' && this.form.pass =="admin"){
+          this.$router.push({name:'Admind'})
+      }
     },
   },
 };

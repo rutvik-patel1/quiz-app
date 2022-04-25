@@ -104,8 +104,6 @@ export default {
       for (let i = 0; i < ele.length; i++) {
         if ((ele[i].type = "radio")) {
           if (ele[i].checked) {
-            // document.getElementById("result").innerHTML +=
-            //   ele[i].name + " Value: " + ele[i].value + "<br>";
             attemptedAnswers.push(ele[i].value);
           }
         }
@@ -142,6 +140,9 @@ export default {
         .then((res) => {
           console.log("postresult", res);
           localStorage.setItem("timeer", true);
+          
+          this.$store.commit('setVisibility',false)
+          console.log("visibility",this.$store.state.visible)
           this.$router.push({ name: "result" });
         })
         .catch((error) => {

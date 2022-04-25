@@ -12,6 +12,7 @@ export default createStore({
     userId: null,
     token: null,
     uName: null,
+    visible:true
   },
   mutations: {
     setUser(state, payload) {
@@ -26,6 +27,9 @@ export default createStore({
       state.userId = null;
       state.uName = null;
     },
+    setVisibility(state,payload){
+      state.visible = payload
+    }
   },
   actions: {
     async login({ commit }, form) {

@@ -1,12 +1,16 @@
 <template>
-  <the-header></the-header>
-  <div class="heading">
-    Welcome , <span style="font-weight: 600">{{ uname }}</span>
-  </div>
-  <div class="nodata" v-if="quizList.length == 0">You Dont have quiz</div>
-  <div class="d-flex" v-else>
-    <div v-for="quiz in quizList" :key="quiz.qId">
-      <quize-card class="d-flex flex-wrap" :quiz="quiz.data"></quize-card>
+  <div v-show="show">
+    <the-header></the-header>
+    <div class="heading">
+      Welcome , <span style="font-weight: 600">{{ uname }}</span>
+    </div>
+    <div class="nodata" v-if="quizList.length == 0">You Dont have quiz</div>
+    <div class="d-flex" v-else>
+      <div v-for="quiz in quizList" :key="quiz.qId">
+    
+        <quize-card class="d-flex flex-wrap" :quiz="quiz.data"></quize-card>
+    
+      </div>
     </div>
   </div>
 </template>
@@ -40,10 +44,15 @@ export default {
 
     const username = await localStorage.getItem("uName");
     this.uname = username || "User";
+    this.show = true;
+  },
+  mounted(){
+ console.log("mounted")
   },
   data() {
     return {
       uname: "",
+      show:false,
       id: "id",
       quizList: [],
     };
